@@ -1,0 +1,35 @@
+{
+    "name": "mattermost-metrics-server",
+    "description": "Mattermost metrics server for collecting performance data, primarily for Android app beta build connecting to community server.",
+    "version": "1.0.0",
+    "author": "Mattermost, Inc.",
+    "license": "Apache 2.0",
+    "main": "src/ping.js",
+    "scripts": {
+        "deploy:env": "sls deploy --stage $NODE_ENV",
+        "deploy:production": "export NODE_ENV=production && npm run deploy:env",
+        "serve": "serverless offline start",
+        "serve:watch": "nodemon -e js -x serverless offline start",
+        "build": "serverless webpack",
+        "watch:ping": "serverless invoke local --watch --function ping --path fixtures/event.json",
+        "watch:get_metrics": "serverless invoke local --watch --function get_metrics --path fixtures/event.json",
+        "watch:get_metric": "serverless invoke local --watch --function get_metric --path fixtures/event.json",
+        "watch:warm": "serverless invoke local --watch --function ping --path fixtures/scheduled.json"
+    },
+    "dependencies": {
+        "pg": "7.9.0",
+        "sequelize": "5.3.1"
+    },
+    "devDependencies": {
+        "@babel/core": "7.4.3",
+        "@babel/preset-env": "7.4.3",
+        "nodemon": "1.18.11",
+        "prettier": "1.16.4",
+        "serverless": "1.40.0",
+        "serverless-dotenv-plugin": "2.0.1",
+        "serverless-offline": "4.9.4",
+        "serverless-webpack": "5.2.0",
+        "webpack": "4.29.6",
+        "webpack-node-externals": "1.7.2"
+    }
+}
