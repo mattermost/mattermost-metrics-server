@@ -15,7 +15,8 @@
         "watch:ping": "serverless invoke local --watch --function ping --path fixtures/event.json",
         "watch:get_metrics": "serverless invoke local --watch --function get_metrics --path fixtures/event.json",
         "watch:get_metric": "serverless invoke local --watch --function get_metric --path fixtures/event.json",
-        "watch:warm": "serverless invoke local --watch --function ping --path fixtures/scheduled.json"
+        "watch:warm": "serverless invoke local --watch --function ping --path fixtures/scheduled.json",
+        "test": "jest"
     },
     "dependencies": {
         "pg": "7.9.0",
@@ -25,6 +26,7 @@
         "@babel/core": "7.4.3",
         "@babel/preset-env": "7.4.3",
         "babel-loader": "8.0.5",
+        "jest": "^24.7.1",
         "nodemon": "1.18.11",
         "prettier": "1.16.4",
         "serverless": "1.40.0",
