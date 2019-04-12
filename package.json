@@ -8,6 +8,7 @@
     "scripts": {
         "deploy:env": "sls deploy --stage $NODE_ENV",
         "deploy:production": "export NODE_ENV=production && npm run deploy:env",
+        "lint": "eslint src --ext js --no-ignore --fix",
         "serve": "serverless offline start",
         "serve:watch": "nodemon -e js -x serverless offline start",
         "build": "serverless webpack",
@@ -18,11 +19,12 @@
     },
     "dependencies": {
         "pg": "7.9.0",
-        "sequelize": "5.3.1"
+        "pg-format": "1.0.4"
     },
     "devDependencies": {
         "@babel/core": "7.4.3",
         "@babel/preset-env": "7.4.3",
+        "babel-loader": "8.0.5",
         "nodemon": "1.18.11",
         "prettier": "1.16.4",
         "serverless": "1.40.0",

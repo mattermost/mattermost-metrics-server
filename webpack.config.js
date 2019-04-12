@@ -6,6 +6,18 @@ module.exports = {
     target: 'node',
     mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
     externals: [nodeExternals()],
+    module: {
+        rules: [
+            {
+                test: /\.js?$/,
+                include: __dirname,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
+            },
+        ],
+    },
     resolve: {
         extensions: ['.js'],
     },

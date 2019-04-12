@@ -6,7 +6,8 @@ package:
 provider:
     name: aws
     runtime: nodejs8.10
-    profile: dev-aws
+    # Enable if AWS profile is available in local dev
+    # profile: dev-aws
     region: us-east-1
     apiKeys:
         - metricsServerKey
@@ -20,49 +21,40 @@ custom:
 functions:
     index:
         handler: src/ping.default
-        timeout: 20
-        memorySize: 1024
         events:
             - http:
                   path: /
                   method: get
                   private: true
-
-    ping:
-        handler: src/ping.default
-        memorySize: 1024
-        events:
-            - http:
-                  path: ping
-                  method: get
-                  private: true
+                  cors: true
 
     get_metrics:
         handler: src/get_metrics.default
-        memorySize: 1024
+        timeout: 20
         events:
             - http:
                   path: metrics
                   method: get
                   private: true
+                  cors: true
 
     get_metric:
         handler: src/get_metric.default
-        memorySize: 1024
         events:
             - http:
                   path: metric/{id}
                   method: get
                   private: true
+                  cors: true
 
     post_metric:
         handler: src/post_metric.default
-        memorySize: 1024
         events:
             - http:
                   path: metric
                   method: post
                   private: true
+                  cors: true
             - schedule:
                   rate: rate(5 minutes)
                   enabled: true
