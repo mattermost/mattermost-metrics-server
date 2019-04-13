@@ -25,12 +25,12 @@ const getMetric = (event, context, callback) => {
             response = errorResponse({
                 err,
             });
+        } else {
+            const metric = res.rows[0];
+            response = successResponse({
+                ...metric,
+            });
         }
-
-        const metric = res.rows[0];
-        response = successResponse({
-            ...metric,
-        });
 
         callback(null, response);
     });
