@@ -6,9 +6,7 @@ const format = require('pg-format');
 
 import {errorResponse, successResponse, runWarm} from './utils';
 
-const now = new Date();
-
-const insertTraceQuery = (deviceInfo, traceEvents, metricId) => {
+const insertTraceQuery = (deviceInfo, traceEvents, metricId, now) => {
     const traces = traceEvents.map((trace) => [
         metricId,
         trace.cat,
@@ -74,8 +72,8 @@ const insertTraceQuery = (deviceInfo, traceEvents, metricId) => {
     );
 };
 
-const insertTraceEvents = (traceEvents, deviceInfo, metricId, callback) => {
-    client.query(insertTraceQuery(deviceInfo, traceEvents, metricId), (err) => {
+const insertTraceEvents = (traceEvents, deviceInfo, metricId, now, callback) => {
+    client.query(insertTraceQuery(deviceInfo, traceEvents, metricId, now), (err) => {
         let response;
         if (err) {
             response = errorResponse({
@@ -91,7 +89,7 @@ const insertTraceEvents = (traceEvents, deviceInfo, metricId, callback) => {
     });
 };
 
-const insertMetricQuery = (deviceInfo, traceEvents) => {
+const insertMetricQuery = (deviceInfo, traceEvents, now) => {
     const metric = [
         [
             JSON.stringify(deviceInfo),
@@ -116,8 +114,8 @@ const insertMetricQuery = (deviceInfo, traceEvents) => {
     );
 };
 
-const insertMetric = (deviceInfo, traceEvents, callback) => {
-    client.query(insertMetricQuery(deviceInfo, traceEvents), (err, res) => {
+const insertMetric = (deviceInfo, traceEvents, now, callback) => {
+    client.query(insertMetricQuery(deviceInfo, traceEvents, now), (err, res) => {
         if (err) {
             const response = errorResponse({
                 err,
@@ -128,7 +126,7 @@ const insertMetric = (deviceInfo, traceEvents, callback) => {
             const metricId = res.rows[0].id;
 
             if (metricId && traceEvents.length > 0) {
-                insertTraceEvents(traceEvents, deviceInfo, metricId, callback);
+                insertTraceEvents(traceEvents, deviceInfo, metricId, now, callback);
             }
         }
     });
@@ -149,8 +147,10 @@ const postMetric = (event, context, callback) => {
 
     const body = JSON.parse(event.body);
 
+    const now = new Date();
+
     if (body && body.data && body.data.deviceInfo && body.data.traceEvents) {
-        insertMetric(body.data.deviceInfo, body.data.traceEvents, callback);
+        insertMetric(body.data.deviceInfo, body.data.traceEvents, now, callback);
     } else {
         const response = errorResponse({
             err: {message: 'Invalid data'},
