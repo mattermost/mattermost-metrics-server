@@ -59,6 +59,16 @@ functions:
                   rate: rate(5 minutes)
                   enabled: true
 
+    get_traces_per_device:
+        handler: src/get_traces_per_device.default
+        timeout: 20
+        events:
+            - http:
+                  path: traces/{device_unique_id}
+                  method: get
+                  private: true
+                  cors: true
+
 plugins:
     - serverless-webpack
     - serverless-offline

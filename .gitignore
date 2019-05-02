@@ -14,6 +14,10 @@ node_modules/
 .env
 .env*
 
+# test data
+fixtures/chrome_tracing.json
+fixtures/trace_events.json
+
 # Logs
 logs
 *.log

@@ -12,60 +12,60 @@ const insertTraceQuery = (deviceInfo, traceEvents, metricId, now) => {
         trace.cat,
         trace.name,
         trace.dur,
-        deviceInfo.apiLevel,
-        deviceInfo.buildNumber,
-        deviceInfo.bundleId,
+        deviceInfo.api_level,
+        deviceInfo.build_number,
+        deviceInfo.bundle_id,
         deviceInfo.brand,
         deviceInfo.country,
-        deviceInfo.deviceId,
-        deviceInfo.deviceLocale,
-        deviceInfo.deviceType,
-        deviceInfo.deviceUniqueId,
+        deviceInfo.device_id,
+        deviceInfo.device_locale,
+        deviceInfo.device_type,
+        deviceInfo.device_unique_id,
         deviceInfo.height,
         deviceInfo.width,
-        deviceInfo.isEmulator,
-        deviceInfo.isTablet,
+        deviceInfo.is_emulator,
+        deviceInfo.is_tablet,
         deviceInfo.manufacturer,
-        deviceInfo.maxMemory,
+        deviceInfo.max_memory,
         deviceInfo.model,
-        deviceInfo.serverVersion,
-        deviceInfo.systemName,
-        deviceInfo.systemVersion,
+        deviceInfo.server_version,
+        deviceInfo.system_name,
+        deviceInfo.system_version,
         deviceInfo.timezone,
-        deviceInfo.version,
+        deviceInfo.app_version,
         now,
         now,
     ]);
 
     return format(
         `INSERT INTO traces (
-            "metricId",
-            "traceCat",
-            "traceName",
-            "traceDur",
-            "apiLevel",
-            "buildNumber",
-            "bundleId",
+            "metric_id",
+            "trace_cat",
+            "trace_name",
+            "trace_dur",
+            "api_level",
+            "build_number",
+            "bundle_id",
             "brand",
             "country",
-            "deviceId",
-            "deviceLocale",
-            "deviceType",
-            "deviceUniqueId",
+            "device_id",
+            "device_locale",
+            "device_type",
+            "device_unique_id",
             "height",
             "width",
-            "isEmulator",
-            "isTablet",
+            "is_emulator",
+            "is_tablet",
             "manufacturer",
-            "maxMemory",
+            "max_memory",
             "model",
-            "serverVersion",
-            "systemName",
-            "systemVersion",
+            "server_version",
+            "system_name",
+            "system_version",
             "timezone",
-            "version",
-            "createdAt",
-            "updatedAt"
+            "app_version",
+            "created_at",
+            "updated_at"
         )
         VALUES %L RETURNING id`,
         traces,
@@ -103,11 +103,11 @@ const insertMetricQuery = (deviceInfo, traceEvents, now) => {
     return format(
         `
         INSERT INTO metrics (
-            "deviceInfo",
-            "displayTimeUnit",
-            "traceEvents",
-            "createdAt",
-            "updatedAt"
+            "device_info",
+            "display_time_unit",
+            "trace_events",
+            "created_at",
+            "updated_at"
         )
         VALUES %L RETURNING id`,
         metric,
@@ -149,8 +149,8 @@ const postMetric = (event, context, callback) => {
 
     const now = new Date();
 
-    if (body && body.data && body.data.deviceInfo && body.data.traceEvents) {
-        insertMetric(body.data.deviceInfo, body.data.traceEvents, now, callback);
+    if (body && body.data && body.data.device_info && body.data.trace_events) {
+        insertMetric(body.data.device_info, body.data.trace_events, now, callback);
     } else {
         const response = errorResponse({
             err: {message: 'Invalid data'},

@@ -53,3 +53,26 @@ export const runWarm = (lambdaFunc) => (event, context, callback) => {
 
     return lambdaFunc(event, context, callback);
 };
+
+const DEFAULT_PAGE = 0;
+const DEFAULT_PER_PAGE = 100;
+
+export function getQueryParams(queryString) {
+    let isChrome, page, perPage;
+    let chromeParam, pageParam, perPageParam;
+    if (queryString) {
+        chromeParam = queryString.chrome;
+        pageParam = queryString.page;
+        perPageParam = queryString.per_page;
+    }
+
+    isChrome = chromeParam === 'true';
+    page = !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : DEFAULT_PAGE;
+    perPage = !isNaN(parseInt(perPageParam, 10)) ? parseInt(perPageParam, 10) : DEFAULT_PER_PAGE;
+
+    return {
+        isChrome,
+        page,
+        perPage,
+    };
+}

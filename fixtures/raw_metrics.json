@@ -1,0 +1,40 @@
+{
+    "data": {
+        "device_info": {
+            "api_level": "27",
+            "build_number": 187,
+            "bundle_id": "com.mattermost.rnbeta",
+            "brand": "google",
+            "country": "US",
+            "device_id": "unknown3",
+            "device_locale": "en",
+            "device_unique_id": "63d7a09343ffeade",
+            "height": 683,
+            "is_emulator": true,
+            "is_tablet": false,
+            "manufacturer": "Google",
+            "max_memory": 402653184,
+            "model": "Android SDK built for x86",
+            "system_name": "Android",
+            "timezone": "Asia/Manila",
+            "app_version": "1.18.1",
+            "width": 411,
+            "server_version": "5.10.0"
+        },
+        "trace_events": [
+            {
+                "cat": "react-native",
+                "ph": "X",
+                "name": "channel:open_drawer",
+                "ts": 1555954472165000,
+                "dur": 540000,
+                "pid": 0,
+                "tid": 10,
+                "args": {
+                    "instanceKey": 3,
+                    "tag": "channel:open_drawer"
+                }
+            }
+        ]
+    }
+}
