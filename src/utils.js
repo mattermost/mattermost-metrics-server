@@ -67,8 +67,12 @@ export function getQueryParams(queryString) {
     }
 
     isChrome = chromeParam === 'true';
-    page = !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : DEFAULT_PAGE;
-    perPage = !isNaN(parseInt(perPageParam, 10)) ? parseInt(perPageParam, 10) : DEFAULT_PER_PAGE;
+    page = !isNaN(parseInt(pageParam, 10))
+        ? parseInt(pageParam, 10)
+        : DEFAULT_PAGE;
+    perPage = !isNaN(parseInt(perPageParam, 10))
+        ? parseInt(perPageParam, 10)
+        : DEFAULT_PER_PAGE;
 
     return {
         isChrome,

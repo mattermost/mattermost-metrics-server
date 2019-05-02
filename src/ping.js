@@ -15,7 +15,7 @@ if (typeof client === 'undefined') {
 }
 
 const hello = (event, context, callback) => {
-    client.query('SELECT $1::text as message', ['I\'m alive!'], (err, res) => {
+    client.query('SELECT $1::text as message', ["I'm alive!"], (err, res) => {
         let response;
         if (err) {
             response = errorResponse({

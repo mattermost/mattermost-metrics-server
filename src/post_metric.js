@@ -72,21 +72,30 @@ const insertTraceQuery = (deviceInfo, traceEvents, metricId, now) => {
     );
 };
 
-const insertTraceEvents = (traceEvents, deviceInfo, metricId, now, callback) => {
-    client.query(insertTraceQuery(deviceInfo, traceEvents, metricId, now), (err) => {
-        let response;
-        if (err) {
-            response = errorResponse({
-                err,
-            });
-        } else {
-            response = successResponse({
-                message: 'Successfully saved',
-            });
-        }
+const insertTraceEvents = (
+    traceEvents,
+    deviceInfo,
+    metricId,
+    now,
+    callback,
+) => {
+    client.query(
+        insertTraceQuery(deviceInfo, traceEvents, metricId, now),
+        (err) => {
+            let response;
+            if (err) {
+                response = errorResponse({
+                    err,
+                });
+            } else {
+                response = successResponse({
+                    message: 'Successfully saved',
+                });
+            }
 
-        callback(null, response);
-    });
+            callback(null, response);
+        },
+    );
 };
 
 const insertMetricQuery = (deviceInfo, traceEvents, now) => {
@@ -115,21 +124,30 @@ const insertMetricQuery = (deviceInfo, traceEvents, now) => {
 };
 
 const insertMetric = (deviceInfo, traceEvents, now, callback) => {
-    client.query(insertMetricQuery(deviceInfo, traceEvents, now), (err, res) => {
-        if (err) {
-            const response = errorResponse({
-                err,
-            });
+    client.query(
+        insertMetricQuery(deviceInfo, traceEvents, now),
+        (err, res) => {
+            if (err) {
+                const response = errorResponse({
+                    err,
+                });
 
-            callback(null, response);
-        } else {
-            const metricId = res.rows[0].id;
+                callback(null, response);
+            } else {
+                const metricId = res.rows[0].id;
 
-            if (metricId && traceEvents.length > 0) {
-                insertTraceEvents(traceEvents, deviceInfo, metricId, now, callback);
+                if (metricId && traceEvents.length > 0) {
+                    insertTraceEvents(
+                        traceEvents,
+                        deviceInfo,
+                        metricId,
+                        now,
+                        callback,
+                    );
+                }
             }
-        }
-    });
+        },
+    );
 };
 
 // Reuse DB connection
@@ -150,7 +168,12 @@ const postMetric = (event, context, callback) => {
     const now = new Date();
 
     if (body && body.data && body.data.device_info && body.data.trace_events) {
-        insertMetric(body.data.device_info, body.data.trace_events, now, callback);
+        insertMetric(
+            body.data.device_info,
+            body.data.trace_events,
+            now,
+            callback,
+        );
     } else {
         const response = errorResponse({
             err: {message: 'Invalid data'},
