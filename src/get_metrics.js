@@ -3,12 +3,7 @@
 
 const {Client} = require('pg');
 
-import {
-    errorResponse,
-    getQueryParams,
-    successResponse,
-    runWarm,
-} from './utils';
+import {errorResponse, getQueryParams, successResponse, runWarm} from './utils';
 
 // Reuse DB connection
 if (typeof client === 'undefined') {
@@ -23,11 +18,8 @@ const getMetrics = (event, context, callback) => {
     // Allows to freeze open connections to a database
     context.callbackWaitsForEmptyEventLoop = false;
 
-    const {
-        page,
-        perPage,
-    } = getQueryParams(event.queryStringParameters);
-    
+    const {page, perPage} = getQueryParams(event.queryStringParameters);
+
     const limitQuery = `LIMIT ${perPage}`;
     const offsetQuery = `OFFSET ${page * perPage}`;
 

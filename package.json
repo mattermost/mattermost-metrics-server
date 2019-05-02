@@ -8,7 +8,7 @@
     "scripts": {
         "deploy:env": "sls deploy --stage $NODE_ENV",
         "deploy:production": "export NODE_ENV=production && npm run deploy:env",
-        "lint": "eslint src --ext js --no-ignore --fix",
+        "format": "prettier --write 'src/*.js'",
         "serve": "serverless offline start",
         "serve:watch": "nodemon -e js -x serverless offline start",
         "build": "serverless webpack",
@@ -16,7 +16,7 @@
         "watch:get_metrics": "serverless invoke local --watch --function get_metrics --path fixtures/event.json",
         "watch:get_metric": "serverless invoke local --watch --function get_metric --path fixtures/event.json",
         "watch:warm": "serverless invoke local --watch --function ping --path fixtures/scheduled.json",
-        "test": "jest"
+        "test": "npm run format"
     },
     "dependencies": {
         "pg": "7.9.0",

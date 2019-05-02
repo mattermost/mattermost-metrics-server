@@ -3,12 +3,7 @@
 
 const {Client} = require('pg');
 
-import {
-    errorResponse,
-    getQueryParams,
-    successResponse,
-    runWarm,
-} from './utils';
+import {errorResponse, getQueryParams, successResponse, runWarm} from './utils';
 
 // Reuse DB connection
 if (typeof client === 'undefined') {
@@ -25,46 +20,47 @@ const getTracesPerDeviceUniqueId = (event, context, callback) => {
 
     const {device_unique_id: deviceUniqueId} = event.pathParameters;
 
-    const {
-        isChrome,
-        page,
-        perPage,
-    } = getQueryParams(event.queryStringParameters);
+    const {isChrome, page, perPage} = getQueryParams(
+        event.queryStringParameters,
+    );
 
     const limitQuery = `LIMIT ${perPage}`;
     const offsetQuery = `OFFSET ${page * perPage}`;
 
-    client.query(`SELECT * FROM metrics WHERE device_info ->> 'device_unique_id' = '${deviceUniqueId}' ORDER BY id DESC ${limitQuery} ${offsetQuery};`, (err, res) => {
-        let response;
-        if (err) {
-            response = errorResponse({
-                err,
-            });
-        } else if (isChrome) {
-            const traceEvents = [];
-            const metricIds = [];
-            res.rows.forEach((metric) => {
-                metricIds.push(metric.id);
-
-                metric.trace_events.forEach((traceEvent) => {
-                    traceEvents.push(traceEvent);
+    client.query(
+        `SELECT * FROM metrics WHERE device_info ->> 'device_unique_id' = '${deviceUniqueId}' ORDER BY id DESC ${limitQuery} ${offsetQuery};`,
+        (err, res) => {
+            let response;
+            if (err) {
+                response = errorResponse({
+                    err,
                 });
-            });
+            } else if (isChrome) {
+                const traceEvents = [];
+                const metricIds = [];
+                res.rows.forEach((metric) => {
+                    metricIds.push(metric.id);
 
-            response = successResponse({
-                chromeTracing: 'true',
-                displayTimeUnit: 'ms',
-                metricIds,
-                traceEvents,
-            });
-        } else {
-            response = successResponse({
-                metrics: res.rows,
-            });
-        }
+                    metric.trace_events.forEach((traceEvent) => {
+                        traceEvents.push(traceEvent);
+                    });
+                });
 
-        callback(null, response);
-    });
+                response = successResponse({
+                    chromeTracing: 'true',
+                    displayTimeUnit: 'ms',
+                    metricIds,
+                    traceEvents,
+                });
+            } else {
+                response = successResponse({
+                    metrics: res.rows,
+                });
+            }
+
+            callback(null, response);
+        },
+    );
 };
 
 export default runWarm(getTracesPerDeviceUniqueId);
