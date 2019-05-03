@@ -40,6 +40,7 @@ functions:
 
     get_metric:
         handler: src/get_metric.default
+        timeout: 20
         events:
             - http:
                   path: metric/{id}
@@ -49,6 +50,7 @@ functions:
 
     post_metric:
         handler: src/post_metric.default
+        timeout: 20
         events:
             - http:
                   path: metric

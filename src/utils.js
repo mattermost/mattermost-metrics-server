@@ -2,15 +2,16 @@
 // See LICENSE.txt for license information.
 
 function lambdaResponse({json, statusCode, allowCORS = false}) {
-    const response = {
+    let response = {
         statusCode,
         body: JSON.stringify(json),
+        headers: {
+            "Content-Type": "application/json",
+        },
     };
 
     if (allowCORS) {
-        response.headers = {
-            'Access-Control-Allow-Origin': '*',
-        };
+        response.headers['Access-Control-Allow-Origin'] = '*';
     }
 
     return response;
