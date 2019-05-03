@@ -3,7 +3,7 @@
 
 const {Client} = require('pg');
 
-import {successResponse, runWarm} from './utils';
+import {errorResponse, successResponse, runWarm} from './utils';
 
 // Reuse DB connection
 if (typeof client === 'undefined') {
@@ -15,6 +15,9 @@ if (typeof client === 'undefined') {
 }
 
 const hello = (event, context, callback) => {
+    // Allows to freeze open connections to a database
+    context.callbackWaitsForEmptyEventLoop = false;
+
     client.query('SELECT $1::text as message', ["I'm alive!"], (err, res) => {
         let response;
         if (err) {
@@ -22,13 +25,15 @@ const hello = (event, context, callback) => {
                 err,
             });
         } else {
+            const ping = res.rows[0];
             response = successResponse({
-                ...res.rows[0],
+                ...ping,
             });
         }
 
         callback(null, response);
     });
+
 };
 
 export default runWarm(hello);
