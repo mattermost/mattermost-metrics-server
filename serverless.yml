@@ -35,8 +35,11 @@ functions:
             - http:
                   path: metrics
                   method: get
-                  private: true
+                  private: false
                   cors: true
+            - throttle:
+                  burstLimit: 100
+                  rateLimit: 100
 
     get_metric:
         handler: src/get_metric.default
@@ -45,8 +48,11 @@ functions:
             - http:
                   path: metric/{id}
                   method: get
-                  private: true
+                  private: false
                   cors: true
+            - throttle:
+                  burstLimit: 100
+                  rateLimit: 100
 
     post_metric:
         handler: src/post_metric.default
@@ -68,8 +74,11 @@ functions:
             - http:
                   path: traces/{device_unique_id}
                   method: get
-                  private: true
+                  private: false
                   cors: true
+            - throttle:
+                  burstLimit: 100
+                  rateLimit: 100
 
 plugins:
     - serverless-webpack
