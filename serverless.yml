@@ -74,11 +74,8 @@ functions:
             - http:
                   path: traces/{device_unique_id}
                   method: get
-                  private: false
+                  private: true
                   cors: true
-            - throttle:
-                  burstLimit: 100
-                  rateLimit: 100
 
 plugins:
     - serverless-webpack

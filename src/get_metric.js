@@ -27,6 +27,10 @@ const getMetric = (event, context, callback) => {
             });
         } else {
             const metric = res.rows[0];
+            if (metric && metric.device_info && metric.device_info.device_unique_id) {
+                delete metric.device_info.device_unique_id;
+            }
+
             response = successResponse({
                 ...metric,
             });

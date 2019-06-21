@@ -32,8 +32,9 @@ const getMetrics = (event, context, callback) => {
                     err,
                 });
             } else {
+                const metrics = filterMetrics(res.rows);
                 response = successResponse({
-                    metrics: res.rows,
+                    metrics,
                 });
             }
 
@@ -41,5 +42,15 @@ const getMetrics = (event, context, callback) => {
         },
     );
 };
+
+function filterMetrics(metrics = []) {
+    return metrics.map((metric) => {
+        if (metric && metric.device_info && metric.device_info.device_unique_id) {
+            delete metric.device_info.device_unique_id;
+        }
+
+        return metric;
+    });
+}
 
 export default runWarm(getMetrics);
